@@ -132,4 +132,12 @@ public class Numeros {
         String valor=String.valueOf(coe);
         return valor;
     }
+    public static String LeerArticuloDeCodigo(String codigo){
+        
+        return null;
+    }
+    public static Double LeerPesoDeCodigo(String codigo){
+        
+        return null;
+    }
 }

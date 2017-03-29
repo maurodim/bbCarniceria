@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-03-2017 a las 18:34:39
+-- Tiempo de generación: 29-03-2017 a las 21:21:13
 -- Versión del servidor: 10.1.9-MariaDB
 -- Versión de PHP: 7.0.1
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bbgestion`
+-- Base de datos: `bbcarniceria`
 --
 
 -- --------------------------------------------------------
@@ -47,7 +47,8 @@ CREATE TABLE `articulos` (
   `servicio1` double DEFAULT '0',
   `idcombo` int(11) DEFAULT '0',
   `actualizacion` int(11) NOT NULL DEFAULT '0',
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `idiva` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -186,6 +187,27 @@ CREATE TABLE `fiscal` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `ivatasa`
+--
+
+CREATE TABLE `ivatasa` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(20) NOT NULL,
+  `tasa` double NOT NULL DEFAULT '1.21',
+  `predeterminado` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ivatasa`
+--
+
+INSERT INTO `ivatasa` (`id`, `descripcion`, `tasa`, `predeterminado`) VALUES
+(1, '21%', 1.21, 1),
+(2, '10.5', 1.105, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ivaventas`
 --
 
@@ -233,8 +255,7 @@ CREATE TABLE `listcli` (
 --
 
 INSERT INTO `listcli` (`COD_CLIENT`, `RAZON_SOCI`, `DOMICILIO`, `COND_VTA`, `TELEFONO_1`, `LISTADEPRECIO`, `NUMERODECUIT`, `CUPODECREDITO`, `empresa`, `codmmd`, `saldo`, `saldoactual`, `TIPO_IVA`, `COEFICIENTE`, `id`) VALUES
-('999999', 'CONSUMIDOR FINAL', 'NN', 1, '11', 1, '1', 0, 'sd', 1, 0, 0, 1, 1, 1),
-('2', 'CAF 21', 'PADRE QUIROGA 2230', 1, '12', 1, '33678412649', NULL, 'sd', 2, 0, 0, 1, 1, 2);
+('999999', 'CONSUMIDOR FINAL', 'NN', 1, '11', 1, '1', 0, 'sd', 1, 0, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -259,7 +280,8 @@ CREATE TABLE `movimientosarticulos` (
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idcaja` bigint(11) DEFAULT NULL,
   `id` bigint(20) NOT NULL,
-  `idcomprobante` int(11) DEFAULT '0'
+  `idcomprobante` int(11) DEFAULT '0',
+  `observaciones` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -306,7 +328,8 @@ CREATE TABLE `movimientosclientes` (
   `idSucursal` int(11) NOT NULL DEFAULT '0',
   `estado` int(11) DEFAULT NULL,
   `id` bigint(20) NOT NULL,
-  `idcomprobante` int(11) DEFAULT '0'
+  `idcomprobante` int(11) DEFAULT '0',
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -445,7 +468,7 @@ CREATE TABLE `tipocomprobantes` (
 --
 
 INSERT INTO `tipocomprobantes` (`numero`, `descripcion`, `numeroActivo`, `numeroSucursal`) VALUES
-(1, 'ticket', 0, 1),
+(1, 'ticket', 1, 1),
 (2, 'FCA A', 0, 1),
 (3, 'remito proveedor', 0, 1),
 (4, 'remito interno', 0, 1),
@@ -455,14 +478,14 @@ INSERT INTO `tipocomprobantes` (`numero`, `descripcion`, `numeroActivo`, `numero
 (8, 'FCA A', 0, 2),
 (9, 'ticket', 0, 3),
 (10, 'FCA A', 0, 3),
-(11, 'recibo de pago', 0, 1),
-(12, 'mov caja', 1, 0),
+(11, 'recibo de pago', 2, 1),
+(12, 'mov caja', 17, 0),
 (13, 'gasto fijo', 0, 1),
 (14, 'ticket', 0, 4),
 (15, 'FCA A', 0, 4),
 (16, 'ticket', 0, 5),
 (17, 'FCA A', 0, 5),
-(18, 'remito de ajuste de stock', 0, 1),
+(18, 'remito de ajuste de stock', 3, 1),
 (19, 'TICKET', 0, 7),
 (20, 'FACTURA PROVEEDOR', 0, 7),
 (21, 'FCA A', 0, 7),
@@ -543,7 +566,8 @@ INSERT INTO `usuarios` (`numero`, `nombre`, `direccion`, `localidad`, `telefono`
 -- Indices de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `idiva` (`idiva`);
 
 --
 -- Indices de la tabla `billetes`
@@ -587,6 +611,14 @@ ALTER TABLE `depositos`
 ALTER TABLE `fiscal`
   ADD PRIMARY KEY (`id`),
   ADD KEY `numero_2` (`numero`);
+
+--
+-- Indices de la tabla `ivatasa`
+--
+ALTER TABLE `ivatasa`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tasa` (`tasa`),
+  ADD KEY `predeterminado` (`predeterminado`);
 
 --
 -- Indices de la tabla `ivaventas`
@@ -672,6 +704,11 @@ ALTER TABLE `articulos`
 ALTER TABLE `fiscal`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `ivatasa`
+--
+ALTER TABLE `ivatasa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT de la tabla `ivaventas`
 --
 ALTER TABLE `ivaventas`
@@ -680,7 +717,7 @@ ALTER TABLE `ivaventas`
 -- AUTO_INCREMENT de la tabla `listcli`
 --
 ALTER TABLE `listcli`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `movimientosarticulos`
 --

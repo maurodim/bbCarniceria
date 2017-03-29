@@ -62,6 +62,35 @@ public class Articulos implements Facturar,Editables,Modificable{
     private Integer idDeposito;
     private static Transaccionable tra=new ConeccionLocal();
     private static ResultSet rr;
+    private Integer idIva;
+    private Double tasaIva;
+    private String descripcionIva;
+
+    public String getDescripcionIva() {
+        return descripcionIva;
+    }
+
+    public void setDescripcionIva(String descripcionIva) {
+        this.descripcionIva = descripcionIva;
+    }
+    
+
+    public Integer getIdIva() {
+        return idIva;
+    }
+
+    public void setIdIva(Integer idIva) {
+        this.idIva = idIva;
+    }
+
+    public Double getTasaIva() {
+        return tasaIva;
+    }
+
+    public void setTasaIva(Double tasaIva) {
+        this.tasaIva = tasaIva;
+    }
+    
 
     public Integer getIdDeposito() {
         return idDeposito;
@@ -300,7 +329,7 @@ public class Articulos implements Facturar,Editables,Modificable{
          */
             tra=new ConeccionLocal();
             
-            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio,articulos.SERVICIO1,articulos.idcombo from articulos where INHABILITADO=0";
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio,articulos.SERVICIO1,articulos.idcombo,articulos.idiva,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where INHABILITADO=0";
             
         //}
         
@@ -325,6 +354,10 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 articulo.setPrecioServicio1(rr.getDouble("servicio1"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
+                
                 listadoBarr.putIfAbsent(articulo.getCodigoDeBarra(),articulo);
                 codA=articulo.getCodigoAsignado();
                 listadoCodigo.putIfAbsent(codA,articulo);
@@ -341,7 +374,7 @@ public class Articulos implements Facturar,Editables,Modificable{
         sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo from articulos where INHABILITADO=0 order by NOMBRE";
         }else{
         */ 
-            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio,articulos.servicio1 from articulos where INHABILITADO=0 order by NOMBRE";
+            sql="select articulos.ID,articulos.NOMBRE,articulos.BARRAS,articulos.recargo,articulos.PRECIO,articulos.equivalencia,articulos.COSTO,articulos.MINIMO,(articulos.STOCK) as stock,articulos.SERVICIO, articulos.modificaPrecio,articulos.modificaServicio,articulos.servicio1,articulos.idiva,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where INHABILITADO=0 order by NOMBRE";
         //}
         rr=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -362,6 +395,9 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 articulo.setPrecioServicio1(rr.getDouble("SERVICIO1"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
                 listadoNom.putIfAbsent(nom,articulo);
                 //resultado.add(articulo);
             }
@@ -433,7 +469,7 @@ public class Articulos implements Facturar,Editables,Modificable{
         ResultSet rr;
         switch (funcion){
             case 1:
-                sql="select *,(0.00)as stock from articulos where INHABILITADO=0 order by ID";
+                sql="select *,(0.00)as stock,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where INHABILITADO=0 order by ID";
                 break;
             case 2:
                 sql="select *,(select sum(cantidad) from movimientosarticulos where movimientosarticulos.numerodeposito="+Inicio.deposito.getNumero()+" and movimientosarticulos.idArticulo=articulosmodificacion.ID)as stock from articulosmodificacion";
@@ -482,6 +518,9 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
                 /*
                 if(articulo.getIdCombo() > 0){
                    sql1="select * from combo where articuloPadre ="+articulo.getNumeroId();
@@ -702,7 +741,7 @@ public class Articulos implements Facturar,Editables,Modificable{
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
         criterio=criterio.toUpperCase();
-        String sql="select *,(select sum(cantidad) FROM movimientosarticulos where movimientosarticulos.idArticulo=articulos.ID group by idArticulo,numeroDeposito limit 0,1)as sstock from articulos where nombre like '%"+criterio+"%'";
+        String sql="select *,(select sum(cantidad) FROM movimientosarticulos where movimientosarticulos.idArticulo=articulos.ID group by idArticulo,numeroDeposito limit 0,1)as sstock,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where nombre like '%"+criterio+"%'";
         
         //Transaccionable tra=new ConeccionLocal();
         rr=tra.leerConjuntoDeRegistros(sql);
@@ -732,6 +771,9 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
                 if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
                 resultado.add(articulo);
@@ -783,7 +825,7 @@ public class Articulos implements Facturar,Editables,Modificable{
     @Override
     public ArrayList listarClientes(String nombre) {
          ArrayList listado=new ArrayList();
-        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo from articulos where BARRAS like '"+nombre+"' and INHABILITADO=0";
+        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo,idiva,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where BARRAS like '"+nombre+"' and INHABILITADO=0";
         Transaccionable tra=new ConeccionLocal();
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
@@ -806,6 +848,9 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
                 if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
                 listado.add(articulo);
@@ -823,7 +868,7 @@ public class Articulos implements Facturar,Editables,Modificable{
         //Articulos articulo;
         //articulo=(Articulos)listadoBarr.get(codigoDeBarra);
         
-        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
+        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo,idiva,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
         
@@ -845,6 +890,9 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
                 if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
             }
@@ -861,7 +909,7 @@ public class Articulos implements Facturar,Editables,Modificable{
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
         //String sql="insert into articulos (NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO="+articulo.getPrecioUnitarioNeto()+",MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+" where ID="+articulo.getNumeroId();
-        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio,modificaServicio,SERVICIO1,idcombo,actualizacion,recargo) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+",round("+articulo.getPrecioUnitarioNeto()+",2),"+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+","+articulo.getModificaServicio()+","+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+",3,"+articulo.getRecargo()+")";
+        String sql="insert into articulos (NOMBRE,SERVICIO,COSTO,PRECIO,MINIMO,BARRAS,modificaPrecio,modificaServicio,SERVICIO1,idcombo,actualizacion,recargo,idiva) values ('"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioServicio()+","+articulo.getPrecioDeCosto()+",round("+articulo.getPrecioUnitarioNeto()+",2),"+articulo.getStockMinimo()+",'"+articulo.getCodigoDeBarra()+"',"+articulo.getModificaPrecio()+","+articulo.getModificaServicio()+","+articulo.getPrecioServicio1()+","+articulo.getIdCombo()+",3,"+articulo.getRecargo()+","+articulo.getIdIva()+")";
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
         sql="select last_insert_id()";
@@ -896,7 +944,7 @@ public class Articulos implements Facturar,Editables,Modificable{
     public Boolean ModificaionObjeto(Object objeto) {
         Articulos articulo=(Articulos)objeto;
         Boolean ch=false;
-        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO=round("+articulo.getPrecioUnitarioNeto()+",2),MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+",actualizacion=2,idcombo="+articulo.getIdCombo()+",recargo="+articulo.getRecargo()+" where ID="+articulo.getNumeroId();
+        String sql="update articulos set NOMBRE='"+articulo.getDescripcionArticulo()+"',idiva="+articulo.getIdIva()+",SERVICIO="+articulo.getPrecioServicio()+",SERVICIO1="+articulo.getPrecioServicio1()+",COSTO="+articulo.getPrecioDeCosto()+",PRECIO=round("+articulo.getPrecioUnitarioNeto()+",2),MINIMO="+articulo.getStockMinimo()+",BARRAS ='"+articulo.getCodigoDeBarra()+"',modificaPrecio="+articulo.getModificaPrecio()+",modificaServicio="+articulo.getModificaServicio()+",actualizacion=2,idcombo="+articulo.getIdCombo()+",recargo="+articulo.getRecargo()+" where ID="+articulo.getNumeroId();
         Transaccionable tra=new Conecciones();
         ch=tra.guardarRegistro(sql);
         //sql="insert into actualizaciones (iddeposito,idobjeto,estado) values (1,1,2),(2,1,2),(3,1,2),(4,1,2),(5,1,2),(6,1,2),(7,1,2)";
@@ -1132,7 +1180,7 @@ public class Articulos implements Facturar,Editables,Modificable{
         //Articulos articulo;
         //articulo=(Articulos)listadoBarr.get(codigoDeBarra);
         
-        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
+        String sql="select id,nombre,barras,precio,equivalencia,costo,minimo,stock,servicio,servicio1,modificaprecio,modificaservicio,stock,recargo,idcombo,idiva,(select ivatasa.tasa from ivatasa where articulos.idiva=ivatasa.id)as tasaIva,(select ivatasa.descripcion from ivatasa where articulos.idiva=ivatasa.id)as ivaDescripcion from articulos where BARRAS like '"+codigoDeBarra+"' and INHABILITADO=0";
         rr=tra.leerConjuntoDeRegistros(sql);
         Articulos articulo=new Articulos();
         
@@ -1154,6 +1202,9 @@ public class Articulos implements Facturar,Editables,Modificable{
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 articulo.setModificaServicio(rr.getBoolean("modificaServicio"));
                 String nom=rr.getString("NOMBRE");
+                articulo.setIdIva(rr.getInt("idiva"));
+                articulo.setTasaIva(rr.getDouble("tasaIva"));
+                articulo.setDescripcionIva(rr.getString("ivaDescripcion"));
                 articulo.setIdCombo(rr.getInt("idcombo"));
                 if(articulo.getIdCombo() > 0)articulo.setCombo(CargarCombo(articulo.getNumeroId()));
             }

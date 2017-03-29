@@ -6,11 +6,13 @@ package interfaceGraficas;
 
 import Conversores.Numeros;
 import interfaces.Editables;
+import interfaces.Personalizable;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JTextField;
 import objetos.Articulos;
+import objetos.Iva;
 import tablas.MiModeloTablaArticulos;
 
 /**
@@ -24,6 +26,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     public static ArrayList combo;
     private ArrayList lstPorSuc=new ArrayList();
     private Double recargo;
+    private ArrayList listadoIva;
+    private Iva iva;
 
     public ArticulosMod(Articulos art) {
         arti=art;
@@ -39,6 +43,14 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         }
         arti.setStockActual(totalActual);
         initComponents();
+        listadoIva=new ArrayList();
+        
+        Personalizable perIva=new Iva();
+        listadoIva=perIva.listar();
+        iva=(Iva) listadoIva.get(0);
+        this.jComboBox2.setModel(perIva.mostrarEnCombo(listadoIva));
+        int pos=iva.Seleccionado(listadoIva,arti.getIdIva());
+        this.jComboBox2.setSelectedIndex(pos);
         combo=new ArrayList();
         this.jTextField1.setText(arti.getDescripcionArticulo());
         
@@ -66,6 +78,12 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
      */
     public ArticulosMod() {
         initComponents();
+        listadoIva=new ArrayList();
+        
+        Personalizable perIva=new Iva();
+        listadoIva=perIva.listar();
+        iva=(Iva) listadoIva.get(0);
+        this.jComboBox2.setModel(perIva.mostrarEnCombo(listadoIva));
         combo=new ArrayList();
         this.setTitle("CARGA DE NUEVO ARTICULO");
         this.jPanel2.setVisible(false);
@@ -117,6 +135,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
 
         setClosable(true);
         setMaximizable(true);
@@ -283,7 +303,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1, Short.MAX_VALUE)
         );
 
         MiModeloTablaArticulos articuloSucursal=new MiModeloTablaArticulos();
@@ -304,6 +324,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         }
         jScrollPane2.setViewportView(jTable1);
 
+        jLabel12.setText("Iva Aplicable:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -317,7 +339,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jCheckBox3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -331,7 +354,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jTextField7)
                     .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -390,7 +414,11 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel6)
                                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(22, 22, 22)
+                                .addGap(21, 21, 21)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
                                 .addComponent(jCheckBox1))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -406,7 +434,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -444,6 +472,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setPrecioServicio(cant);
         cant=Numeros.ConvertirStringADouble(this.jTextField9.getText());
         arti.setPrecioServicio1(cant);
+        iva=(Iva) listadoIva.get(this.jComboBox2.getSelectedIndex());
+        arti.setIdIva(iva.getId());
         arti.setModificaPrecio(this.jCheckBox1.isSelected());
         arti.setModificaServicio(this.jCheckBox2.isSelected());
         if(this.jCheckBox3.isSelected()){
@@ -591,9 +621,11 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
