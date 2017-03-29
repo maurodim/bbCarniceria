@@ -318,6 +318,7 @@ public class Comprobantes implements Facturar{
                 PrintWriter pw=new PrintWriter(fichero);
                 
                 //ACA EMPIEZO CON LOS COMPROBANTES FISCALES
+                String tasaIva;
                 System.out.println("comprobante tipo: "+comp.getTipoComprobante());
                 if(comp.getTipoComprobante()==8){
                     String cuit=comp.getCliente().getNumeroDeCuit().replace("-","");
@@ -329,12 +330,14 @@ public class Comprobantes implements Facturar{
                         redondeo=articulo.getCantidad() * 1000;
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
-                        pUnitario=articulo.getPrecioUnitarioNeto() / 1.21;
+                        pUnitario=articulo.getPrecioUnitarioNeto() / articulo.getTasaIva();
+                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tasaIva=tasaIva+"0";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         //pUnitario=pUnitario / articulo.getCantidad();
                         redondeo=pUnitario;
                         precioUnitario=Numeros.ConvetirNumeroDosDigitos(redondeo).replace(",", "");
-                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|2100|M|1|0|0|";
+                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|"+tasaIva+"|M|1|0|0|";
                         //sentencias=sentencias.replace(".","");
                         
                         pw.println(sentencias);
@@ -361,10 +364,12 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         pUnitario=articulo.getPrecioUnitarioNeto();
+                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tasaIva=tasaIva+"000";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         redondeo=pUnitario * 100;
                         precioUnitario=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".", "");
-                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|210000|M|1|0|0|";
+                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|"+tasaIva+"|M|1|0|0|";
                         //sentencias=sentencias.replace(".","");
                         
                         pw.println(sentencias);
@@ -388,8 +393,10 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         redondeo=articulo.getPrecioUnitarioNeto() * 100;
+                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tasaIva=tasaIva+"000";
                         precioUnitario=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".", "");
-                        sentencias="@TIQUEITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|210000|M|1|0|0|";
+                        sentencias="@TIQUEITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|"+tasaIva+"|M|1|0|0|";
                         //sentencias=sentencias.replace(".","");
                         
                         pw.println(sentencias);
@@ -408,18 +415,21 @@ public class Comprobantes implements Facturar{
                     sentencias="@FACTABRE|M|C|A|1|P|12|I|I|"+comp.getCliente().getRazonSocial()+"||CUIT|"+cuit+"|N|"+comp.getCliente().getDireccion()+"|SFE|_|_|_|C";
                     pw.println(sentencias);
                     Double pUnitario=0.00;
+                    
                     while(iComp.hasNext()){
                         articulo=(Articulos)iComp.next();
                         redondeo=articulo.getCantidad() * 1000;
                         redondeo=redondeo * (-1);
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
-                        pUnitario=articulo.getPrecioUnitarioNeto() / 1.21;
+                        pUnitario=articulo.getPrecioUnitarioNeto() / articulo.getTasaIva();
+                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tasaIva=tasaIva+"0";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         //pUnitario=pUnitario / articulo.getCantidad();
                         redondeo=pUnitario;
                         precioUnitario=Numeros.ConvetirNumeroDosDigitos(redondeo).replace(",", "");
-                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|2100|M|1|0|0|";
+                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|"+tasaIva+"|M|1|0|0|";
                         //sentencias=sentencias.replace(".","");
                         
                         pw.println(sentencias);
@@ -446,10 +456,12 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         pUnitario=articulo.getPrecioUnitarioNeto();
+                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tasaIva=tasaIva+"000";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         redondeo=pUnitario * 100;
                         precioUnitario=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".", "");
-                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|210000|M|1|0|0|";
+                        sentencias="@FACTITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|"+tasaIva+"|M|1|0|0|";
                         //sentencias=sentencias.replace(".","");
                         
                         pw.println(sentencias);

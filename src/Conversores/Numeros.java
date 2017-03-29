@@ -140,4 +140,11 @@ public class Numeros {
         
         return null;
     }
+    public static String ConvertirTasaIva(Double iva){
+        Double resultado=iva * 1000;
+        resultado=resultado - 1000;
+        String tasaS=String.valueOf(resultado);
+        tasaS=tasaS.substring(0,3);
+        return tasaS;
+    }
 }
