@@ -443,8 +443,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             //System.out.println("ENTRO CON EL ENTER¡¡¡¡¡¡");
             listadoDeBusqueda.clear();
             Facturar fart=new Articulos();
+            Double precioCargado=0.00;
+            String codigo;
             arti=new Articulos();
-                arti=(Articulos) fart.cargarPorCodigoDeBarra(jTextField1.getText());
+                precioCargado=Numeros.LeerPrecioDeCodigo(jTextField1.getText());
+                codigo=Numeros.LeerArticuloDeCodigo(jTextField1.getText());
+                arti=(Articulos) fart.cargarPorCodigoDeBarra(codigo);
                 //arti=(Articulos)fart.cargarPorCodigoDeBarraMayorista(jTextField1.getText(),cliT.getListaDePrecios());
             
             if(arti.getCodigoDeBarra().equals("")){
@@ -452,8 +456,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
              jTextField1.setText("");   
             }else{
             listadoDeBusqueda.add(arti);
+            
             jTextField1.setText(arti.getCodigoAsignado());
-            jTextField2.setText("1");
+            Double pesoCalculado=precioCargado / arti.getPrecioUnitarioNeto();
+            String pesoS=Numeros.ConvetirDoubleAString(pesoCalculado);
+            pesoCalculado=Numeros.ConvertirStringADouble(pesoS);
+            jTextField2.setText(String.valueOf(pesoCalculado));
             this.jLabel8.setText(arti.getDescripcionArticulo());
             if(arti.getModificaPrecio()){
                 this.jLabel7.setVisible(true);

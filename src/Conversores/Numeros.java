@@ -133,12 +133,18 @@ public class Numeros {
         return valor;
     }
     public static String LeerArticuloDeCodigo(String codigo){
-        
-        return null;
+        String precio=codigo.substring(5);
+        precio=""+precio;
+        return precio;
     }
-    public static Double LeerPesoDeCodigo(String codigo){
+    public static Double LeerPrecioDeCodigo(String codigo){
+        String precio=codigo.substring(0,5);
+        Integer decimal=Integer.parseInt(precio.substring(3));
+        decimal=decimal / 100;
+        Integer entero=Integer.parseInt(precio.substring(0,3));
         
-        return null;
+        Double pp=Double.parseDouble(entero+"."+decimal);
+        return pp;
     }
     public static String ConvertirTasaIva(Double iva){
         Double resultado=iva * 1000;
@@ -146,5 +152,10 @@ public class Numeros {
         String tasaS=String.valueOf(resultado);
         tasaS=tasaS.substring(0,3);
         return tasaS;
+    }
+    public static String ConvetirDoubleAString(Double num){
+        DecimalFormat formato=new DecimalFormat("####.##");
+        doble=formato.format(num);
+        return doble;
     }
 }
