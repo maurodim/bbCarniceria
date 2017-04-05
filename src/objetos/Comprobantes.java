@@ -6,7 +6,7 @@ package objetos;
 
 import Conversores.Numeros;
 import Impresiones.Impresora;
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
 import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import interfacesPrograma.Facturar;

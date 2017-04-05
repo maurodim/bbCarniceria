@@ -4,10 +4,12 @@
  */
 package facturacion.pantallas;
 
+import Clientes.Pantallas.NuevoCliente;
+import Clientes.Pantallas.SeleccionDeClientes;
 import Conversores.Numeros;
 import Fiscal.EpsonTicket;
 import Impresiones.Impresora;
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
 
 import interfaceGraficas.Inicio;
 import interfaces.Modificable;
@@ -99,7 +101,6 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -110,6 +111,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -230,13 +232,6 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton4.setText("Buscar Articulo");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jButton5.setText("Nuevo Cliente");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,6 +272,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
 
+        jLabel11.setText("<html><strong>F1 para buscar - F8 para confirmar articulo buscado</strong></html>");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -295,8 +292,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                                 .addGap(109, 109, 109))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,7 +314,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(21, 21, 21)
                                         .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -331,12 +328,13 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
                     .addComponent(jButton5))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
-                .addGap(18, 18, 18)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -499,8 +497,11 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             
             if(cliT.getCondicionDeVenta()==2)this.jCheckBox2.setEnabled(true);
             //Numeros.ConvertirTasaIva(arti.getTasaIva());
-            this.jTextField2.selectAll();
-            this.jTextField2.requestFocus();
+            //this.jTextField2.selectAll();
+            //this.jTextField2.requestFocus();
+            CargarCantidad();
+            //int evento=KeyEvent.VK_ENTER;
+            //jTextField2KeyPressed(evento);
             }
         }
         if(evt.getKeyCode()==KeyEvent.VK_F1){
@@ -630,6 +631,69 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jTextField1.setText("");
         jTextField1.requestFocus();
             }
+        }
+        if(evt.getKeyCode()==KeyEvent.VK_F8){
+            listadoDeBusqueda.clear();
+            Facturar fart=new Articulos();
+            Double precioCargado=0.00;
+            String codigo;
+            arti=new Articulos();
+                precioCargado=Numeros.LeerPrecioDeCodigo(jTextField1.getText());
+                codigo=Numeros.LeerArticuloDeCodigo(jTextField1.getText());
+                arti=(Articulos) fart.cargarPorCodigoDeBarra(codigo);
+                //arti=(Articulos)fart.cargarPorCodigoDeBarraMayorista(jTextField1.getText(),cliT.getListaDePrecios());
+            
+            if(arti.getCodigoDeBarra().equals("")){
+                
+             jTextField1.setText("");   
+            }else{
+            listadoDeBusqueda.add(arti);
+            
+            jTextField1.setText(arti.getCodigoAsignado());
+            Double pesoCalculado=precioCargado / arti.getPrecioUnitarioNeto();
+            String pesoS=Numeros.ConvetirDoubleAString(pesoCalculado);
+            pesoCalculado=Numeros.ConvertirStringADouble(pesoS);
+            jTextField2.setText(String.valueOf(pesoCalculado));
+            this.jLabel8.setText(arti.getDescripcionArticulo());
+            if(arti.getModificaPrecio()){
+                this.jLabel7.setVisible(true);
+                this.jTextField4.setVisible(true);
+                //this.jTextField4.setEnabled(true);
+               // this.jCheckBox1.setVisible(false);
+                
+            }else{
+            
+                this.jLabel7.setVisible(false);
+                this.jTextField4.setVisible(false);
+                
+
+                if(arti.getPrecioServicio() > 0){
+                    this.jLabel7.setVisible(true);
+                    this.jTextField4.setVisible(true);
+                    
+                    this.jTextField4.setText(Numeros.ConvertirNumero(arti.getPrecioServicio()));
+                    //this.jTextField4.setEnabled(false);
+                    this.jCheckBox1.setVisible(true);
+                    Calendar calendario=new GregorianCalendar();
+                    int hora=calendario.get(Calendar.HOUR_OF_DAY);
+                    //System.out.println("LA HORA ACTUAL ES :"+hora);
+                    if(hora >= 0 || hora < 8){
+                        if(arti.getModificaServicio()){
+                         //System.err.println("SI TIENE QUE MODIFICAR EL SERVICIO");  
+                         this.jCheckBox1.setEnabled(false);
+                        }else{
+                        //System.err.println("NO DEBE MODIFICAR EL SERVICIO");
+                            this.jCheckBox1.setEnabled(true);
+                        }
+                        }
+                }
+            }
+            
+            if(cliT.getCondicionDeVenta()==2)this.jCheckBox2.setEnabled(true);
+            //Numeros.ConvertirTasaIva(arti.getTasaIva());
+            this.jTextField2.selectAll();
+            this.jTextField2.requestFocus();
+        }
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
@@ -842,14 +906,6 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Facturar fart=new Articulos();
-            listadoDeBusqueda=fart.listadoBusqueda(jTextField1.getText());
-            //listadoDeBusqueda=fart.listadoBusquedaMayorista(this.jTextField1.getText(),cliT.getListaDePrecios());
-       
-        cargarLista(listadoDeBusqueda);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         jTextField1.requestFocus();
     }//GEN-LAST:event_formComponentShown
@@ -915,7 +971,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         int posicion=this.jTable2.getSelectedRow();
         Articulos articulo=new Articulos();
         articulo=(Articulos)listadoDeBusqueda.get(posicion);
-        jTextField1.setText(articulo.getCodigoDeBarra());
+        String precioS=Numeros.ConvertirEnPrecioDeBarra(articulo.getPrecioUnitarioNeto());
+        String codigg=Numeros.ConvertirEnCodigoDeBarra(articulo.getCodigoDeBarra());
+        jTextField1.setText(codigg+"0"+precioS);
         jTextField1.selectAll();
         jTextField1.requestFocus();
     }//GEN-LAST:event_jTable2MouseClicked
@@ -925,7 +983,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         int posicion=this.jTable2.getSelectedRow();
         Articulos articulo=new Articulos();
         articulo=(Articulos)listadoDeBusqueda.get(posicion);
-        jTextField1.setText(articulo.getCodigoDeBarra());
+        String precioS=Numeros.ConvertirEnPrecioDeBarra(articulo.getPrecioUnitarioNeto());
+        String codigg=Numeros.ConvertirEnCodigoDeBarra(articulo.getCodigoDeBarra());
+        jTextField1.setText(codigg+"0"+precioS);
         jTextField1.selectAll();
         jTextField1.requestFocus();
     }
@@ -1028,16 +1088,56 @@ private void verificar(){
         //System.err.println("nimero "+ah+" decripcion "+descripcion+" limite "+cantidad);
     }
 }
+private void CargarCantidad(){
+    Double cantt=Double.parseDouble(this.jTextField2.getText());
+            if(cantt < 10000){
+            if(arti.getModificaPrecio()){
+                this.jTextField4.selectAll();
+                this.jTextField4.requestFocus();
+            }else{
+                if(arti.getPrecioServicio()>0){
+                 this.jTextField4.requestFocus();   
+                }else{
+                    Articulos articul=new Articulos();
+                    articul.setCantidad(cantt);
+                    articul.setCodigoAsignado(arti.getCodigoAsignado());
+                    
+                    articul.setCodigoDeBarra(arti.getCodigoDeBarra());
+                    articul.setDescripcionArticulo(arti.getDescripcionArticulo());
+                    articul.setNumeroId(arti.getNumeroId());
+                    articul.setPrecioDeCosto(arti.getPrecioDeCosto());
+                    articul.setPrecioUnitario(arti.getPrecioUnitarioNeto());
+                    articul.setPrecioUnitarioNeto(arti.getPrecioUnitarioNeto());
+                    articul.setIdCombo(arti.getIdCombo());
+                    articul.setCombo(arti.getCombo());
+            detalleDelPedido.add(articul);
+            agregarRenglonTabla();
+//                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
+//                montoTotal=montoTotal + montoTotalX;
+                 montrarMonto();
+                 //System.err.println("MONTO TOTAL "+montoTotal);
+                 this.jLabel8.setText("");
+                 this.jTable2.removeAll();
+                this.jButton1.setVisible(false);
+            this.jTextField1.setText("");
+            this.jTextField2.setText("");
+            this.jTextField1.requestFocus();
+                }
+                }
+            }else{
+                JOptionPane.showMessageDialog(this,"LA CANTIDAD INGRESADA ES EXCESIVA, POR FAVOR VERIFÍQUELA");
+            }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
     public static javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

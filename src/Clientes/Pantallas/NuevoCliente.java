@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturacion.pantallas;
+package Clientes.Pantallas;
 
 import Conversores.Numeros;
-import facturacion.clientes.ClientesTango;
-import facturacion.clientes.ListasDePrecios;
+import Clientes.Objetos.ClientesTango;
+import Clientes.Objetos.ListasDePrecios;
+import facturacion.pantallas.IngresoDePedidos;
 import interfaces.Personalizable;
 import interfacesPrograma.Facturar;
 import java.util.ArrayList;

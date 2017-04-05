@@ -9,7 +9,7 @@ import Compras.Proveedores;
 import Conversores.Numeros;
 import Impresiones.Impresora;
 import Sucursales.Cajas;
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
 import interfaces.Adeudable;
 import interfaces.Personalizable;
 import interfacesPrograma.Busquedas;

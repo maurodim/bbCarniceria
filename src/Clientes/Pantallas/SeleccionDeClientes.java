@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturacion.pantallas;
+package Clientes.Pantallas;
 
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
+import facturacion.pantallas.IngresoDePedidos;
+import facturacion.pantallas.IngresoNtaCred;
 import interfaceGraficas.Inicio;
 import interfacesPrograma.Busquedas;
 import java.awt.event.KeyEvent;
@@ -226,7 +228,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();

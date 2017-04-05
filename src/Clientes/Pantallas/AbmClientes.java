@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaceGraficas;
+package Clientes.Pantallas;
 
 import Conversores.Numeros;
 import Excel.InformesClientes;
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
 import interfacesPrograma.Busquedas;
 import interfacesPrograma.Facturar;
 import java.sql.SQLException;

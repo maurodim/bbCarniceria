@@ -4,9 +4,11 @@
  */
 package facturacion.pantallas;
 
+import Clientes.Pantallas.NuevoCliente;
+import Clientes.Pantallas.SeleccionDeClientes;
 import Conversores.Numeros;
 import Fiscal.EpsonTicket;
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
 
 import interfaceGraficas.Inicio;
 import interfaces.Modificable;

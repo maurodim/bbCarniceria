@@ -4,6 +4,7 @@
  */
 package interfaceGraficas;
 
+import Clientes.Pantallas.AbmClientes;
 import Actualizaciones.Actualiza;
 import Actualizaciones.Actualiza1;
 import Actualizaciones.BkDeConeccion;
@@ -19,7 +20,7 @@ import Sucursales.Cajas;
 import Sucursales.ListasDePrecios;
 import Sucursales.Sucursales;
 import Sucursales.Usuarios;
-import facturacion.clientes.ClientesTango;
+import Clientes.Objetos.ClientesTango;
 import facturacion.pantallas.IngresoDePedidos;
 import facturacion.pantallas.IngresoNtaCred;
 import interfacesPrograma.Cajeables;
