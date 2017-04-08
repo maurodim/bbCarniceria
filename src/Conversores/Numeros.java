@@ -148,10 +148,10 @@ public class Numeros {
         return precio;
     }
     public static Double LeerPrecioDeCodigo(String codigo){
-        String precio=codigo.substring(7,12);
-        Integer decimal=Integer.parseInt(precio.substring(3));
+        String precio=codigo.substring(6,12);
+        Integer decimal=Integer.parseInt(precio.substring(4));
         //decimal=decimal / 100;
-        Integer entero=Integer.parseInt(precio.substring(0,3));
+        Integer entero=Integer.parseInt(precio.substring(0,4));
         
         Double pp=Double.parseDouble(entero+"."+decimal);
         return pp;
@@ -164,7 +164,7 @@ public class Numeros {
         return tasaS;
     }
     public static String ConvetirDoubleAString(Double num){
-        DecimalFormat formato=new DecimalFormat("####.##");
+        DecimalFormat formato=new DecimalFormat("####.###");
         doble=formato.format(num);
         return doble;
     }
