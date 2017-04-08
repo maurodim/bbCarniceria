@@ -7,6 +7,7 @@ package Clientes.Pantallas;
 import Conversores.Numeros;
 import Excel.InformesClientes;
 import Clientes.Objetos.ClientesTango;
+import interfaceGraficas.Inicio;
 import interfacesPrograma.Busquedas;
 import interfacesPrograma.Facturar;
 import java.sql.SQLException;
@@ -25,11 +26,13 @@ import tablas.MiModeloTablaArticulos;
  */
 public class AbmClientes extends javax.swing.JInternalFrame {
     private ArrayList listadoClientes=new ArrayList();
+    ClientesTango cliente;
     /**
      * Creates new form AbmClientes
      */
     public AbmClientes() {
         initComponents();
+        cliente=new ClientesTango();
     }
 
     /**
@@ -51,6 +54,7 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         dateChooserCombo3 = new datechooser.beans.DateChooserCombo();
         dateChooserCombo4 = new datechooser.beans.DateChooserCombo();
         jButton3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -143,6 +147,15 @@ public class AbmClientes extends javax.swing.JInternalFrame {
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
+        jButton2.setText("Ver Detalle de Saldo");
+        jButton2.setMaximumSize(new java.awt.Dimension(101, 39));
+        jButton2.setMinimumSize(new java.awt.Dimension(101, 39));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -154,7 +167,9 @@ public class AbmClientes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -166,8 +181,10 @@ public class AbmClientes extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -185,7 +202,7 @@ public class AbmClientes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -257,10 +274,20 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int posicion=this.jTable1.getSelectedRow();
+        cliente=(ClientesTango) listadoClientes.get(posicion);
+        AbmSaldosClientes abm=new AbmSaldosClientes(cliente);
+        Inicio.jDesktopPane1.add(abm);
+        abm.setVisible(true);
+        abm.toFront();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo3;
     private datechooser.beans.DateChooserCombo dateChooserCombo4;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
