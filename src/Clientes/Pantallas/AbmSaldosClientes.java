@@ -8,8 +8,15 @@ package Clientes.Pantallas;
 
 import Clientes.Objetos.ClientesTango;
 import Clientes.Objetos.MovimientosClientes;
+import Excel.InformesClientes;
+import Sucursales.Cajas;
 import interfaces.Movible;
+import interfacesPrograma.Cajeables;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -67,6 +74,11 @@ public class AbmSaldosClientes extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/excel_icone.png"))); // NOI18N
@@ -120,9 +132,38 @@ public class AbmSaldosClientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        InformesClientes informes=new InformesClientes();
+        
+        try {
+
+            informes.GenerarInformeIndividual(cli);
+        } catch (SQLException ex) {
+            Logger.getLogger(AbmClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        cargarLista();
+    }//GEN-LAST:event_jTable1MouseClicked
+private void cargarLista(){
+    DefaultListModel modelo=new DefaultListModel();
+    //ArrayList lista=new ArrayList();
+    Cajeables cajea=new Cajas();
+   
+    //lista=Cajas.getListadoCajas();
+    int posic=this.jTable1.getSelectedRow();
+    Cajas caaj=new Cajas();
+    //caaj=(Cajas)Cajas.getListadoCajas().get(posic);
+    moviC=(MovimientosClientes) listadoMov.get(posic);
+    
+    modelo=cajea.LeerComprobante(moviC.getId(),moviC.getTipoComprobante(),moviC.getTipoComprobante());
+    
+    ListadoComprobantesClientes listadoDeArticulos=new ListadoComprobantesClientes(caaj);
+    listadoDeArticulos.jList1.setModel(modelo);
+    listadoDeArticulos.setVisible(true);
+    int posicion=listadoDeArticulos.jList1.getSelectedIndex();
+    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
