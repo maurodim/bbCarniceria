@@ -6,6 +6,7 @@
 package Clientes.Objetos;
 
 import Conversores.Numeros;
+import interfaces.Editables;
 import interfaces.Movible;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ import objetos.ConeccionLocal;
  *
  * @author mauro
  */
-public class MovimientosClientes implements Movible{
+public class MovimientosClientes implements Movible,Editables{
     private Integer idCliente;
     private Double monto;
     private Integer pagado;
@@ -242,6 +243,37 @@ public class MovimientosClientes implements Movible{
 
     @Override
     public ArrayList ListarMovimientosPorFechas(Integer id, String desde, String hasta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Boolean AltaObjeto(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Boolean ModificaionObjeto(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Boolean EliminacionDeObjeto(Object objeto) {
+        MovimientosClientes movi=(MovimientosClientes) objeto;
+        Boolean verif=true;
+        tra=new ConeccionLocal();
+        String sql="delete from movimientosclientes where id="+movi.getId();
+        System.out.println(sql);
+        tra.guardarRegistro(sql);
+        return verif;
+    }
+
+    @Override
+    public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList ListarPorSucursal(Object objeto) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

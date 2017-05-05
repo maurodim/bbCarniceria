@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import tablas.MiModeloTablaArticulos;
 
 /**
@@ -228,7 +229,12 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         if(ajuste == 0){
             
         }else{
-            cliente.ajustarSaldo(cliente, ajuste);
+            if(JOptionPane.showConfirmDialog(this,"Genera Movimiento de Ajuste de Saldo?","Aplicar Ajuste de Saldo",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==1){
+                
+            }else{
+                cliente.ajustarSaldo(cliente, ajuste);
+            }
+            
         }
         if(cliente.getCupoDeCredito()>0){
             cliente.setCondicionDeVenta(2);
