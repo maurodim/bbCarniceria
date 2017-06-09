@@ -157,10 +157,17 @@ public class Numeros {
         return pp;
     }
     public static String ConvertirTasaIva(Double iva){
-        Double resultado=iva * 1000;
-        resultado=resultado - 1000;
+        Double resultado=iva * 10000;
+        resultado=resultado - 10000;
         String tasaS=String.valueOf(resultado);
-        tasaS=tasaS.substring(0,3);
+        tasaS=tasaS.substring(0,4);
+        return tasaS;
+    }
+    public static String ConvertirTasaIva6(Double iva){
+        Double resultado=iva * 1000000;
+        resultado=resultado - 1000000;
+        String tasaS=String.valueOf(resultado);
+        tasaS=tasaS.substring(0,6);
         return tasaS;
     }
     public static String ConvetirDoubleAString(Double num){

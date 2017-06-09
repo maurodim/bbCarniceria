@@ -324,6 +324,8 @@ public class Comprobantes implements Facturar{
                     String cuit=comp.getCliente().getNumeroDeCuit().replace("-","");
                     sentencias="@FACTABRE|T|C|A|1|P|12|I|I|"+comp.getCliente().getRazonSocial()+"||CUIT|"+cuit+"|N|"+comp.getCliente().getDireccion()+"|SFE|_|_|_|C";
                     pw.println(sentencias);
+                    Double subtotal=0.00;
+                    Double tass=0.00;
                     Double pUnitario=0.00;
                     while(iComp.hasNext()){
                         articulo=(Articulos)iComp.next();
@@ -331,8 +333,11 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         pUnitario=articulo.getPrecioUnitarioNeto() / articulo.getTasaIva();
+                        tass=articulo.getTasaIva() -1;
+                        tass= articulo.getPrecioUnitarioNeto() * tass;
+                        subtotal=subtotal + tass;
                         tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
-                        tasaIva=tasaIva+"0";
+                        //tasaIva=tasaIva+"0";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         //pUnitario=pUnitario / articulo.getCantidad();
                         redondeo=pUnitario;
@@ -342,7 +347,7 @@ public class Comprobantes implements Facturar{
                         
                         pw.println(sentencias);
                     }
-                    Double subtotal=comp.getMontoTotal() * 0.21;
+                    //Double subtotal=comp.getMontoTotal() * 0.21;
                     
                     sentencias="@FACTSUBTOTAL|N";
                     pw.println(sentencias);
@@ -357,6 +362,8 @@ public class Comprobantes implements Facturar{
                     String cuit=comp.getCliente().getNumeroDeCuit().replace("-","");
                     sentencias="@FACTABRE|T|C|B|1|P|12|I|E|"+comp.getCliente().getRazonSocial()+"||CUIT|"+comp.getCliente().getNumeroDeCuit()+"|N|"+comp.getCliente().getDireccion()+"|SFE|_|_|_|C";
                     pw.println(sentencias);
+                    Double subtotal=0.00;
+                    Double tass=0.00;
                     Double pUnitario=0.00;
                     while(iComp.hasNext()){
                         articulo=(Articulos)iComp.next();
@@ -364,7 +371,10 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         pUnitario=articulo.getPrecioUnitarioNeto();
-                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tass=articulo.getTasaIva() -1;
+                        tass= articulo.getPrecioUnitarioNeto() * tass;
+                        subtotal=subtotal + tass;
+                        tasaIva=Numeros.ConvertirTasaIva6(articulo.getTasaIva());
                         tasaIva=tasaIva+"000";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         redondeo=pUnitario * 100;
@@ -374,7 +384,7 @@ public class Comprobantes implements Facturar{
                         
                         pw.println(sentencias);
                     }
-                    Double subtotal=comp.getMontoTotal() * 0.21;
+                    //Double subtotal=comp.getMontoTotal() * 0.21;
                     
                     sentencias="@FACTSUBTOTAL|N";
                     pw.println(sentencias);
@@ -385,7 +395,8 @@ public class Comprobantes implements Facturar{
                 }
                 if(comp.getTipoComprobante()==11){
                     sentencias="@TIQUEABRE|B";
-                    
+                    Double subtotal=0.00;
+                    Double tass=0.00;
                     pw.println(sentencias);
                     while(iComp.hasNext()){
                         articulo=(Articulos)iComp.next();
@@ -393,7 +404,10 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         redondeo=articulo.getPrecioUnitarioNeto() * 100;
-                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tass=articulo.getTasaIva() -1;
+                        tass= articulo.getPrecioUnitarioNeto() * tass;
+                        subtotal=subtotal + tass;
+                        tasaIva=Numeros.ConvertirTasaIva6(articulo.getTasaIva());
                         tasaIva=tasaIva+"000";
                         precioUnitario=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".", "");
                         sentencias="@TIQUEITEM|"+articulo.getDescripcionArticulo()+"|"+cantidad+"|"+precioUnitario+"|"+tasaIva+"|M|1|0|0|";
@@ -415,7 +429,8 @@ public class Comprobantes implements Facturar{
                     sentencias="@FACTABRE|M|C|A|1|P|12|I|I|"+comp.getCliente().getRazonSocial()+"||CUIT|"+cuit+"|N|"+comp.getCliente().getDireccion()+"|SFE|_|_|_|C";
                     pw.println(sentencias);
                     Double pUnitario=0.00;
-                    
+                    Double subtotal=0.00;
+                    Double tass=0.00;
                     while(iComp.hasNext()){
                         articulo=(Articulos)iComp.next();
                         redondeo=articulo.getCantidad() * 1000;
@@ -423,6 +438,9 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         pUnitario=articulo.getPrecioUnitarioNeto() / articulo.getTasaIva();
+                        tass=articulo.getTasaIva() -1;
+                        tass= articulo.getPrecioUnitarioNeto() * tass;
+                        subtotal=subtotal + tass;
                         tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
                         tasaIva=tasaIva+"0";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
@@ -434,7 +452,7 @@ public class Comprobantes implements Facturar{
                         
                         pw.println(sentencias);
                     }
-                    Double subtotal=comp.getMontoTotal() * 0.21;
+                    //Double subtotal=comp.getMontoTotal() * 0.21;
                     
                     sentencias="@FACTSUBTOTAL|N";
                     pw.println(sentencias);
@@ -449,6 +467,8 @@ public class Comprobantes implements Facturar{
                     String cuit=comp.getCliente().getNumeroDeCuit().replace("-","");
                     sentencias="@FACTABRE|M|C|B|1|P|12|I|E|"+comp.getCliente().getRazonSocial()+"||CUIT|"+comp.getCliente().getNumeroDeCuit()+"|N|"+comp.getCliente().getDireccion()+"|SFE|_|_|_|C";
                     pw.println(sentencias);
+                    Double subtotal=0.00;
+                    Double tass=0.00;
                     Double pUnitario=0.00;
                     while(iComp.hasNext()){
                         articulo=(Articulos)iComp.next();
@@ -456,7 +476,10 @@ public class Comprobantes implements Facturar{
                         cantidad=Numeros.ConvetirNumeroCuatroDigitos(redondeo).replace(".","");
                         //cantidad=String.valueOf(articulo.getCantidad()).replace(".","");
                         pUnitario=articulo.getPrecioUnitarioNeto();
-                        tasaIva=Numeros.ConvertirTasaIva(articulo.getTasaIva());
+                        tass=articulo.getTasaIva() -1;
+                        tass= articulo.getPrecioUnitarioNeto() * tass;
+                        subtotal=subtotal + tass;
+                        tasaIva=Numeros.ConvertirTasaIva6(articulo.getTasaIva());
                         tasaIva=tasaIva+"000";
                         //pUnitario=articulo.getPrecioUnitarioNeto() - pUnitario;
                         redondeo=pUnitario * 100;
@@ -466,7 +489,7 @@ public class Comprobantes implements Facturar{
                         
                         pw.println(sentencias);
                     }
-                    Double subtotal=comp.getMontoTotal() * 0.21;
+                    //Double subtotal=comp.getMontoTotal() * 0.21;
                     
                     sentencias="@FACTSUBTOTAL|N";
                     pw.println(sentencias);
@@ -532,6 +555,7 @@ public class Comprobantes implements Facturar{
             
             
         }else{
+            
         numeroActual(comp.getTipoComprobante());
         }
         
@@ -598,6 +622,10 @@ public class Comprobantes implements Facturar{
         while(iComp1.hasNext()){
             articulo=(Articulos)iComp1.next();
             Double cantidad=articulo.getCantidad() * -1;
+            System.out.println("tasa iva 4 digitos"+Numeros.ConvertirTasaIva(articulo.getTasaIva()));
+            System.out.println("tasa iva 6 digitos"+Numeros.ConvertirTasaIva6(articulo.getTasaIva()));
+            Double redondeo=articulo.getCantidad() * 1000;
+            System.out.println("cantidad"+String.valueOf(redondeo));
             
             if(articulo.getIdCombo() == 1){
                 Iterator itC=articulo.getCombo().listIterator();
