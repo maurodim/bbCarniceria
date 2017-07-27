@@ -19,13 +19,33 @@ import java.util.Iterator;
  */
 public class NuevoCliente extends javax.swing.JInternalFrame {
     private ArrayList listadoL=new ArrayList();
+    private ClientesTango cli;
+    private int estado;
     /**
      * Creates new form NuevoCliente
      */
     public NuevoCliente() {
         initComponents();
+        cli=new ClientesTango();
+        estado=0;
     }
-
+    public NuevoCliente(ClientesTango cliente){
+        initComponents();
+        cli=new ClientesTango();
+        this.setTitle("MODIFICACION DE CLIENTES");
+        estado=1;
+        cli=cliente;
+        this.jTextField1.setText(cli.getRazonSocial());
+        this.jTextField2.setText(cli.getDireccion());
+        this.jTextField5.setText(String.valueOf(cli.getCupoDeCredito()));
+        this.jTextField3.setText(cli.getNumeroDeCuit());
+        this.jTextField4.setText(cli.getTelefono());
+        int condIva=Integer.parseInt(cli.getCondicionIva());
+        condIva=condIva -1;
+        this.jComboBox1.setSelectedIndex(condIva);
+        this.jTextField1.requestFocus();
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -180,7 +200,7 @@ public class NuevoCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       ClientesTango cli=new ClientesTango();
+       //ClientesTango cli=new ClientesTango();
        //cli.setCodigoCliente(title);
        cli.setRazonSocial(this.jTextField1.getText());
        cli.setDireccion(this.jTextField2.getText());
@@ -219,11 +239,17 @@ public class NuevoCliente extends javax.swing.JInternalFrame {
        cli.setNumeroDeCuit(this.jTextField3.getText());
        cli.setTelefono(this.jTextField4.getText());
        Facturar fact=new ClientesTango();
-        fact.guardarNuevoCliente(cli);
-       IngresoDePedidos.jCheckBox2.setSelected(true);
-       IngresoDePedidos.jCheckBox2.setEnabled(false);
-       IngresoDePedidos.cliT=cli;
-       IngresoDePedidos.jLabel10.setText(cli.getRazonSocial());
+       if(estado==0){
+            fact.guardarNuevoCliente(cli);
+           IngresoDePedidos.jCheckBox2.setSelected(true);
+           IngresoDePedidos.jCheckBox2.setEnabled(false);
+           IngresoDePedidos.cliT=cli;
+           IngresoDePedidos.jLabel10.setText(cli.getRazonSocial());
+       }
+       if(estado==1){
+           fact.modificarDatosDelCliente(cli);
+           this.dispose();
+       }
        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

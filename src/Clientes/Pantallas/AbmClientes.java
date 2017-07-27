@@ -71,7 +71,7 @@ public class AbmClientes extends javax.swing.JInternalFrame {
         miTabla.addColumn("TELEFONO");
         miTabla.addColumn("CUPO DE CREDITO");
         miTabla.addColumn("SALDO");
-        miTabla.addColumn("LISTA DE PRECIO");
+        miTabla.addColumn("CUIT");
         Object[] fila=new Object[7];
         ClientesTango cliente=new ClientesTango();
         while(listC.hasNext()){
@@ -86,13 +86,13 @@ public class AbmClientes extends javax.swing.JInternalFrame {
             }else{
                 fila[5]="0.00";
             }
-            fila[6]=cliente.getListaDePrecios();
+            fila[6]=cliente.getNumeroDeCuit();
             miTabla.addRow(fila);
         }
         jTable1.setModel(miTabla);
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Guardar");
+        jButton1.setText("Modificar");
         jButton1.setMaximumSize(new java.awt.Dimension(101, 39));
         jButton1.setMinimumSize(new java.awt.Dimension(101, 39));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -242,9 +242,15 @@ public class AbmClientes extends javax.swing.JInternalFrame {
             cliente.setCondicionDeVenta(1);
         }
         //cliente.setSaldo(Numeros.ConvertirStringADouble(String.valueOf(this.jTable1.getValueAt(posicion,5))));
-        cliente.setListaDePrecios((Integer.parseInt(String.valueOf(this.jTable1.getValueAt(posicion,6)))));
-        Facturar fact=new ClientesTango();
-        fact.modificarDatosDelCliente(cliente);
+        //cliente.setListaDePrecios((Integer.parseInt(String.valueOf(this.jTable1.getValueAt(posicion,6)))));
+        cliente.setNumeroDeCuit((String) this.jTable1.getValueAt(posicion, 6));
+        NuevoCliente nuevo=new NuevoCliente(cliente);
+        Inicio.jDesktopPane1.add(nuevo);
+        nuevo.setVisible(true);
+        nuevo.toFront();
+        
+        //Facturar fact=new ClientesTango();
+        //fact.modificarDatosDelCliente(cliente);
         //this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
